@@ -19,6 +19,7 @@ void removeDirectory(char str[]);
 
 struct StorageUnit
 {
+
     char *root;
     char *path;
 };struct StorageUnit store;
@@ -29,6 +30,9 @@ int main()
     makeDiretory("desk");
     printf("%s\n",store.path);
     makeDiretory("dir");
+    makeDiretory("usr");
+    printf("%s\n",store.path);
+    removeDirectory("dir");
     printf("%s\n",store.path);
     return 0;
 }
@@ -67,9 +71,11 @@ void makeDiretory(char str[]){
     add(&head,str);
     }else{
         char *temp = malloc(sizeof(char) * sizeof(store.path));
+        char *slash = '/';
 
         strcpy(temp, store.path);
-        strcat(temp, str);
+        strncat(temp, &slash, 1);
+        strcat(temp,str);
 
         store.path = temp;
 
@@ -78,4 +84,18 @@ void makeDiretory(char str[]){
 
 };
 
+void removeDirectory(char str[]){
+    if(store.path == '\0') printf("nothing to  remove");
+
+    removes(&head,str);
+
+
+    char *temp = strstr(store.path,str);
+
+    int pos = temp - store.path - 1;
+
+    for(int i = pos; i < strlen(store.path); i++){
+        if(store.path[i] != '\0') store.path[i] = '\0';
+    }
+}
 
