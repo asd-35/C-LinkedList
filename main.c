@@ -13,9 +13,9 @@ void add(struct LinkedList *head,char str[]);
 
 void removes(struct LinkedList *head,char *str[]);
 
-void makeDiretory();
+void makeDiretory(char str[]);
 
-void removeDirectory();
+void removeDirectory(char str[]);
 
 struct StorageUnit
 {
@@ -25,19 +25,16 @@ struct StorageUnit
 
 int main()
 {
-    add(&head,"hello");
-    printf("%s\n",head.dir);
-    add(&head,"yoo");
-    printf("%s\n",head.child->dir);
-    add(&head,"hel");
-    printf("%s\n",head.child->child->dir);
-    removes(&head,"yoo");
-
+    store.root = "./";
+    makeDiretory("desk");
+    printf("%s\n",store.path);
+    makeDiretory("dir");
+    printf("%s\n",store.path);
     return 0;
 }
 
 void add(struct LinkedList *head,char str[]){
-    if(head->dir == '\0')
+    if(head->dir )
     {
         head->dir = str;
     }
@@ -62,5 +59,23 @@ void removes(struct LinkedList *head,char *str[]){
         removes(head->child,str);
     }
 }
+
+void makeDiretory(char str[]){
+    if(store.path == '\0'){
+    store.path = str;
+
+    add(&head,str);
+    }else{
+        char *temp = malloc(sizeof(char) * sizeof(store.path));
+
+        strcpy(temp, store.path);
+        strcat(temp, str);
+
+        store.path = temp;
+
+        add(&head,str);
+    }
+
+};
 
 
