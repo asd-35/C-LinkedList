@@ -41,7 +41,10 @@ int main()
     printf("child  dir: %s\n",head.child->child->dir);
 
     //printf("%s\n",store.path);
-    //removeDirectory("dir");
+    removeDirectory("dir");
+    printf("store : %s\n",store.path);
+    printf("child desktop: %p\n",head.child);
+
     //swapDirectory(head,"desk","dir");
 
     return 0;
@@ -75,7 +78,8 @@ void add(struct LinkedList *head,char str[]){
 
 void removes(struct LinkedList *head,char *str[]){
 
-    if(strcmp(head->child->dir,str)){
+    if(strcmp(head->child->dir,str) == 0){
+
         head->child = NULL;
     }else{
         removes(head->child,str);
