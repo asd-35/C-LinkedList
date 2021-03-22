@@ -128,32 +128,60 @@ void removeDirectory(char str[]){
 
 void swapDirectory(struct LinkedList *swap,char *str1[],char *str2[])
 {
-
-    if (swap->dir != NULL)
+    struct LinkedList *temp = swap;
+    char *tempPath;
+    tempPath = malloc(sizeof(store.path));
+    store.path = NULL;
+    while(temp->child != NULL)
     {
 
         if(strcmp(swap->dir,str1) == 0){
 
-            swap->dir = NULL;
-            swap->dir = malloc(sizeof(str2));
-            strcpy(swap->dir,str2);
+            temp->dir = NULL;
+            temp->dir = malloc(sizeof(str2));
+            strcpy(temp->dir,str2);
+            printf("after copy bin: %s\n",temp->dir);
+            char *str = malloc(sizeof(str2));
+            char *slash = '/';
 
-            swapDirectory(swap->child,str1,str2);
+            strcpy(str, temp->dir);
+            strncat(str, &slash, 1);
+            strcat(tempPath,str);
+            str = NULL;
+
+            temp = temp->child;
 
         }else if(strcmp(swap->dir,str2) == 0){
 
-            swap->dir = NULL;
-            swap->dir = malloc(sizeof(str1));
-            strcpy(swap->dir,str1);
+            temp->dir = NULL;
+            temp->dir = malloc(sizeof(str1));
+            strcpy(temp->dir,str1);
+            printf("after copy desk: %s\n",temp->dir);
+            char *str = malloc(sizeof(str1));
+            char *slash = '/';
 
-            swapDirectory(swap->child,str1,str2);
+            strcpy(str, temp->dir);
+            strncat(str, &slash, 1);
+            strcat(tempPath,str);
+            str = NULL;
 
+            temp = temp->child;
+
+        }else{
+
+        char *str = malloc(sizeof(*temp->dir));
+        char *slash = '/';
+
+        strcpy(str, temp->dir);
+        strncat(str, &slash, 1);
+        strcat(tempPath,str);
+        str = NULL;
+
+        temp = temp->child;
         }
-
-    }else{
-
-    swapDirectory(swap->child,str1,str2);
     }
+    store.path = malloc(sizeof(tempPath));
+    store.path = tempPath;
 
 }
 
