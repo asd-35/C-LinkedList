@@ -17,7 +17,7 @@ void makeDiretory(char str[]);
 
 void removeDirectory(char str[]);
 
-void swapDirectory(struct LinkedList swap,char *str1[],char *str2[]);
+void swapDirectory(struct LinkedList *swap,char *str1[],char *str2[]);
 
 struct StorageUnit
 {
@@ -28,24 +28,29 @@ struct StorageUnit
 
 int main()
 {
+    printf("initializng our dirs\n");
     store.root = "./";
-    makeDiretory("desk");
-    printf("store : %s\n",store.path);
-    makeDiretory("dir");
-    printf("store : %s\n",store.path);
+    makeDiretory("desktop");
+    printf("store : %s%s\n",store.root,store.path);
+    makeDiretory("bin");
+    printf("store : %s%s\n",store.root,store.path);
     makeDiretory("usr");
-    printf("store : %s\n",store.path);
+    printf("store : %s%s\n",store.root,store.path);
+    printf("every dir is also on the linkedlist\n");
     printf("child desktop: %p\n",head.child);
     printf("child  desktop: %s\n",head.child->dir);
-    printf("child dir: %p\n",head.child->child->dir);
-    printf("child  dir: %s\n",head.child->child->dir);
+    printf("child bin: %p\n",head.child->child->dir);
+    printf("child  bin: %s\n",head.child->child->dir);
+    printf("lets swap some of them\n");
+    swapDirectory(&head,"desktop","bin");
+    printf("child bin: %p\n",head.child);
+    printf("child  bin: %s\n",head.child->dir);
+    printf("store : %s%s\n",store.root,store.path);
+    printf("lets remove desktop\n");
+    removeDirectory("desktop");
+    printf("store : %s%s\n",store.root,store.path);
+    printf("child bin: %p\n",head.child);
 
-    //printf("%s\n",store.path);
-    removeDirectory("dir");
-    printf("store : %s\n",store.path);
-    printf("child desktop: %p\n",head.child);
-
-    //swapDirectory(head,"desk","dir");
 
     return 0;
 }
@@ -77,6 +82,7 @@ void add(struct LinkedList *head,char str[]){
 };
 
 void removes(struct LinkedList *head,char *str[]){
+    if(strcmp(head->dir,str) == 0) head = NULL;
 
     if(strcmp(head->child->dir,str) == 0){
 
@@ -120,18 +126,35 @@ void removeDirectory(char str[]){
     }
 }
 
-void swapDirectory(struct LinkedList swap,char *str1[],char *str2[])
+void swapDirectory(struct LinkedList *swap,char *str1[],char *str2[])
 {
-    if(swap.child == NULL)
-    {
-        printf("ends here\n");
 
-    }else
+    if (swap->dir != NULL)
     {
-        printf("%s\n",swap.dir);
-        swapDirectory(*swap.child,str1,str2);
+
+        if(strcmp(swap->dir,str1) == 0){
+
+            swap->dir = NULL;
+            swap->dir = malloc(sizeof(str2));
+            strcpy(swap->dir,str2);
+
+            swapDirectory(swap->child,str1,str2);
+
+        }else if(strcmp(swap->dir,str2) == 0){
+
+            swap->dir = NULL;
+            swap->dir = malloc(sizeof(str1));
+            strcpy(swap->dir,str1);
+
+            swapDirectory(swap->child,str1,str2);
+
+        }
+
+    }else{
+
+    swapDirectory(swap->child,str1,str2);
     }
 
-
 }
+
 
